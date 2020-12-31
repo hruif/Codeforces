@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{41923a09-2110-4eb4-add9-fd70d9225a96}</ProjectGuid>
-    <RootNamespace>GlobalRound12</RootNamespace>
+    <ProjectGuid>{53ea880b-1b42-47db-a1dd-827296c9df0a}</ProjectGuid>
+    <RootNamespace>My20202021ICPCRegionalOnlineMirror</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -138,6 +138,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Bakery.cpp" />
+    <ClCompile Include="K and Medians.cpp" />
+    <ClCompile Include="LaIS.cpp" />
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
