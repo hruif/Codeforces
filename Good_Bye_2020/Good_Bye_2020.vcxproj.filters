@@ -18,7 +18,7 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="The Riddle of the Sphinx.cpp">
+    <ClCompile Include="Apollo_versus_Pan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
