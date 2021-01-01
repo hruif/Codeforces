@@ -27,13 +27,15 @@ using vpii = vector<pii>;
 
 int t;
 int sums[200000];
-int b[200000];
+int b[200001];
 
 int main() {
 	cin >> t;
 	while (t--) {
 		int n, k, m;
 		cin >> n >> k >> m;
+		vi pre(m, 0);
+		vi po(m, 0);
 		F0R(i, m) {
 			cin >> b[i];
 		}
@@ -46,8 +48,31 @@ int main() {
 			continue;
 		}
 
-		FOR(i, 1, m) {
-			sums[i] = b[i] - b[i - 1] - 1;
+		int p = 0;
+		int cnt = 0;
+		b[m] = n + 1;
+		F0R(i, n) {
+			if (i + 1 == b[p]) {
+				pre[p] = cnt;
+				p++;
+			}
+			else cnt++;
 		}
+		cnt = 0;
+		p = m - 1;
+		RF0R(i, n - 1) {
+			if (i + 1 == b[p]) {
+				po[p] = cnt;
+				p--;
+			}
+			else cnt++;
+		}
+		bool imp = true;
+		F0R(i, m) {
+			if (pre[i] >= k / 2 && po[i] >= k / 2) imp = false;
+		}
+
+		if (imp) cout << "NO\n";
+		else cout << "YES\n";
 	}
 }

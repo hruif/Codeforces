@@ -21,11 +21,5 @@
     <ClCompile Include="LaIS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bakery.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="K and Medians.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

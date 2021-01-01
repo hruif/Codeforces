@@ -139,8 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bakery.cpp" />
-    <ClCompile Include="K and Medians.cpp" />
     <ClCompile Include="LaIS.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
