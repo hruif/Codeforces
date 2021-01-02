@@ -29,42 +29,43 @@ using vpii = vector<pii>;
 
 int t;
 ll x[500000];
-ll b[60];
+ll b[61];
+ll ans[500000];
 
 int main() {
 	cin >> t;
-	while (t--) {
+	F0R(i, t) {
+		memset(b, 0, sizeof(b));
 		ll o = 1;
 
 		int n;
 		cin >> n;
 		F0R(i, n) cin >> x[i];
-		F0R(i, n) x[i] %= MOD;
 		F0R(i, n) {
-			F0R(j, 60) {
+			F0R(j, 61) {
 				ll bi = o << j;
-				if (x[i] & (bi)) b[j]++;
+				if (bi > x[i]) break;
+				if (x[i] & bi) b[j]++;
 			}
 		}
 		ll sum = 0;
 		F0R(i, n) {
-			ll s1 = 0;
-			F0R(j, 60) {
+			ll s1 = 0, s2 = 0;
+			F0R(j, 61) {
 				ll bi = o << j;
-				if (x[i] & (bi)) s1 += (b[j] * ((bi) % MOD)) % MOD;
-				s1 %= MOD;
+				bool bin = x[i] & bi;
+				bi %= MOD;
+				if (bin) {
+					s1 += (b[j] * bi) % MOD;
+					s2 += (n * bi) % MOD;
+				}
+				else s2 += (b[j] * bi) % MOD;
 			}
-			ll s2 = 0;
-			F0R(j, 60) {
-				ll bi = o << j;
-				if (x[i] & (bi)) s2 += (n * ((bi) % MOD)) % MOD;
-				else s2 += (b[j] * ((bi) % MOD)) % MOD;
-				s2 %= MOD;
-			}
+			s1 %= MOD;
+			s2 %= MOD;
 			sum += (s1 * s2) % MOD;
-			sum %= MOD;
 		}
 
-		cout << sum << '\n';
+		cout << sum % MOD << '\n';
 	}
 }
