@@ -30,27 +30,33 @@ using vpii = vector<pii>;
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-int n1, n2, n3;
-ll a[300000];
+int t;
+int a[100];
 
 int main() {
-	fast_cin();
+	cin >> t;
+	while (t--) {
+		int n, d;
+		cin >> n >> d;
+		F0R(i, n) cin >> a[i];
 
-	cin >> n1 >> n2 >> n3;
-	F0R(i, n1 + n2 + n3) cin >> a[i];
-	ll sum = 0;
-	F0R(i, n1 + n2 + n3) sum += a[i];
-	sort(a, a + n1);
-	sort(a + n1, a + n2);
-	sort(a + n1 + n2, a + n1 + n2 + n3);
-
-	ll n1s = -a[0], n2s = -a[n1], n3s = -a[n1 + n2];
-	F0R(i, n1) n1s += a[i];
-	F0R(i, n2) n2s += a[i + n1];
-	F0R(i, n3) n3s += a[i + n1 + n2];
-
-	ll ns = n1s + n2s + n3s;
-	cout << max(a[0] + ns - a[n1] - a[n1 + n2],
-		max(a[n1] + ns - a[0] - a[n1 + n2],
-			a[n1 + n2] + ns - a[0] - a[n1])) << '\n';
+		bool clean = true;
+		F0R(i, n) {
+			if (a[i] > d) {
+				clean = false;
+				break;
+			}
+		}
+		if (clean) {
+			cout << "YES\n";
+			continue;
+		}
+		sort(a, a + n);
+		if (a[0] + a[1] <= d) {
+			cout << "YES\n";
+		}
+		else {
+			cout << "NO\n";
+		}
+	}
 }

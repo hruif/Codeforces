@@ -30,27 +30,23 @@ using vpii = vector<pii>;
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-int n1, n2, n3;
-ll a[300000];
+int t;
+vi st;
+
+void updst(int k, int x) {
+	int sn = st.size() / 2;
+	k += n;
+	st[k] = x;
+
+}
+
+void setst(int n) {
+	int sn = 1;
+	while (sn < n) sn *= 2;
+	sn *= 2;
+	st.resize(sn, 0);
+}
 
 int main() {
-	fast_cin();
 
-	cin >> n1 >> n2 >> n3;
-	F0R(i, n1 + n2 + n3) cin >> a[i];
-	ll sum = 0;
-	F0R(i, n1 + n2 + n3) sum += a[i];
-	sort(a, a + n1);
-	sort(a + n1, a + n2);
-	sort(a + n1 + n2, a + n1 + n2 + n3);
-
-	ll n1s = -a[0], n2s = -a[n1], n3s = -a[n1 + n2];
-	F0R(i, n1) n1s += a[i];
-	F0R(i, n2) n2s += a[i + n1];
-	F0R(i, n3) n3s += a[i + n1 + n2];
-
-	ll ns = n1s + n2s + n3s;
-	cout << max(a[0] + ns - a[n1] - a[n1 + n2],
-		max(a[n1] + ns - a[0] - a[n1 + n2],
-			a[n1 + n2] + ns - a[0] - a[n1])) << '\n';
 }

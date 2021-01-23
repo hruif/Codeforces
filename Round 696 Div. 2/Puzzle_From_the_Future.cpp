@@ -30,27 +30,27 @@ using vpii = vector<pii>;
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-int n1, n2, n3;
-ll a[300000];
+int t;
 
 int main() {
-	fast_cin();
-
-	cin >> n1 >> n2 >> n3;
-	F0R(i, n1 + n2 + n3) cin >> a[i];
-	ll sum = 0;
-	F0R(i, n1 + n2 + n3) sum += a[i];
-	sort(a, a + n1);
-	sort(a + n1, a + n2);
-	sort(a + n1 + n2, a + n1 + n2 + n3);
-
-	ll n1s = -a[0], n2s = -a[n1], n3s = -a[n1 + n2];
-	F0R(i, n1) n1s += a[i];
-	F0R(i, n2) n2s += a[i + n1];
-	F0R(i, n3) n3s += a[i + n1 + n2];
-
-	ll ns = n1s + n2s + n3s;
-	cout << max(a[0] + ns - a[n1] - a[n1 + n2],
-		max(a[n1] + ns - a[0] - a[n1 + n2],
-			a[n1 + n2] + ns - a[0] - a[n1])) << '\n';
+	cin >> t;
+	while (t--) {
+		int n;
+		cin >> n;
+		int last = -1;
+		for (int i = 0; i < n; i++) {
+			char cur;
+			cin >> cur;
+			int next = 0;
+			if (last != 2 && cur == '1') next = 1;
+			else if (last != 1) {
+				if (cur == '1') next = 0;
+				else next = 1;
+			}
+			else next = 0;
+			cout << next;
+			last = cur - '0' + next;
+		}
+		cout << '\n';
+	}
 }

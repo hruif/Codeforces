@@ -30,27 +30,26 @@ using vpii = vector<pii>;
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-int n1, n2, n3;
-ll a[300000];
+int q;
+string ans;
 
 int main() {
-	fast_cin();
+	cin >> q;
+	while (q--) {
+		ans.clear();
 
-	cin >> n1 >> n2 >> n3;
-	F0R(i, n1 + n2 + n3) cin >> a[i];
-	ll sum = 0;
-	F0R(i, n1 + n2 + n3) sum += a[i];
-	sort(a, a + n1);
-	sort(a + n1, a + n2);
-	sort(a + n1 + n2, a + n1 + n2 + n3);
-
-	ll n1s = -a[0], n2s = -a[n1], n3s = -a[n1 + n2];
-	F0R(i, n1) n1s += a[i];
-	F0R(i, n2) n2s += a[i + n1];
-	F0R(i, n3) n3s += a[i + n1 + n2];
-
-	ll ns = n1s + n2s + n3s;
-	cout << max(a[0] + ns - a[n1] - a[n1 + n2],
-		max(a[n1] + ns - a[0] - a[n1 + n2],
-			a[n1 + n2] + ns - a[0] - a[n1])) << '\n';
+		string s, t;
+		cin >> s >> t;
+		int ss = s.size(), ts = t.size();
+		int sp = 0, tp = 0;
+		while (sp != ss - 1 || tp != ts - 1) {
+			if (s[sp] != t[tp]) break;
+			ans.push_back(s[sp]);
+			sp++, tp++;
+			sp %= ss, tp %= ts;
+		}
+		ans.push_back(s[ss - 1]);
+		if (sp == ss - 1 && tp == ts - 1 && s[sp] == t[tp]) cout << ans << '\n';
+		else cout << "-1\n";
+	}
 }

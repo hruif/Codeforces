@@ -34,6 +34,11 @@ int t;
 int a[300000];
 vi intim;
 
+bool hilval(int ind) {
+	return (a[ind] < a[ind - 1] && a[ind] < a[ind + 1])
+		|| (a[ind] > a[ind - 1] && a[ind] > a[ind + 1]);
+}
+
 int main() {
 	fast_cin();
 
@@ -57,18 +62,30 @@ int main() {
 
 		int maxsub = 0;
 		F0R(i, n) {
-			int sub = 0;
-			if (intim[i] != 0) sub++;
-			if (i > 0 && intim[i - 1] != 0) sub++;
-			if ((i < n - 1 && i > 0) && ((intim[i + 1] == 1 && a[i - 1] >= a[i + 1])
-				|| (intim[i + 1] == -1 && a[i - 1] <= a[i + 1]))) sub++;
-			maxsub = max(maxsub, sub);
-			sub = 0;
-			if (intim[i] != 0) sub++;
-			if (i < n - 1 && intim[i + 1] != 0) sub++;
-			if ((i < n - 1 && i > 0) && ((intim[i - 1] == 1 && a[i + 1] >= a[i - 1])
-				|| (intim[i - 1] == -1 && a[i + 1] <= a[i - 1]))) sub++;
-			maxsub = max(maxsub, sub);
+			int init = 0;
+			if (i > 1 && hilval(i - 1)) init++;
+			if (i > 0 && i < n - 1 && hilval(i)) init++;
+			if (i < n - 2 && hilval(i + 1)) init++;
+
+			int val = a[i];
+			if (i > 0) {
+				a[i] = a[i - 1];
+				int numc = 0;
+				if (i > 1 && hilval(i - 1)) numc++;
+				if (i > 0 && i < n - 1 && hilval(i)) numc++;
+				if (i < n - 2 && hilval(i + 1)) numc++;
+				if (init - numc > maxsub) maxsub = init - numc;
+				a[i] = val;
+			}
+			if (i < n - 1) {
+				a[i] = a[i + 1];
+				int numc = 0;
+				if (i > 1 && hilval(i - 1)) numc++;
+				if (i > 0 && i < n - 1 && hilval(i)) numc++;
+				if (i < n - 2 && hilval(i + 1)) numc++;
+				if (init - numc > maxsub) maxsub = init - numc;
+				a[i] = val;
+			}
 		}
 
 		cout << inin - maxsub << '\n';

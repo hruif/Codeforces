@@ -30,27 +30,33 @@ using vpii = vector<pii>;
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-int n1, n2, n3;
-ll a[300000];
+int t;
+vi primes;
+
+void findprimes() {
+	for (int i = 2; i < 30000; i++) {
+		bool nonprime = false;
+		for (int j = 0; j < primes.size(); j++) {
+			if (i % primes[j] == 0) {
+				nonprime = true;
+				break;
+			}
+		}
+		if (!nonprime) primes.push_back(i);
+	}
+}
 
 int main() {
-	fast_cin();
+	findprimes();
 
-	cin >> n1 >> n2 >> n3;
-	F0R(i, n1 + n2 + n3) cin >> a[i];
-	ll sum = 0;
-	F0R(i, n1 + n2 + n3) sum += a[i];
-	sort(a, a + n1);
-	sort(a + n1, a + n2);
-	sort(a + n1 + n2, a + n1 + n2 + n3);
-
-	ll n1s = -a[0], n2s = -a[n1], n3s = -a[n1 + n2];
-	F0R(i, n1) n1s += a[i];
-	F0R(i, n2) n2s += a[i + n1];
-	F0R(i, n3) n3s += a[i + n1 + n2];
-
-	ll ns = n1s + n2s + n3s;
-	cout << max(a[0] + ns - a[n1] - a[n1 + n2],
-		max(a[n1] + ns - a[0] - a[n1 + n2],
-			a[n1 + n2] + ns - a[0] - a[n1])) << '\n';
+	cin >> t;
+	while (t--) {
+		int d;
+		cin >> d;
+		int p1 = 0;
+		while (primes[p1] - 1 < d) p1++;
+		int val = primes[p1];
+		while (primes[p1] - val < d) p1++;
+		cout << primes[p1] * val << '\n';
+	}
 }
