@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{a0696010-a694-433b-9bec-52767aa35730}</ProjectGuid>
-    <RootNamespace>Round725Div3</RootNamespace>
+    <ProjectGuid>{11ab9abe-9311-4c78-9231-711067654d8f}</ProjectGuid>
+    <RootNamespace>Round728Div2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Another_Problem_About_Dividing_Numbers.cpp" />
+    <ClCompile Include="Great_Graphs.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
