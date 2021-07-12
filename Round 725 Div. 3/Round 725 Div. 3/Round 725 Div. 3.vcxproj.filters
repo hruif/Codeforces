@@ -18,7 +18,7 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Another_Problem_About_Dividing_Numbers.cpp">
+    <ClCompile Include="Gift_Set.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

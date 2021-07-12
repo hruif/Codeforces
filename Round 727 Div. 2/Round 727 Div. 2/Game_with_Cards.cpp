@@ -63,64 +63,49 @@ int main() {
 		cin >> r[i].first >> r[i].second;
 	}
 
-	int ll = n, lr = n;
-	pii rl, rr;
-	rl = rr = { -1, m + 1 };
-	bool possible = true;
+	pii lr, rr;
+	pair<bool, bool> canTake = { true, true };
+	lr = rr = { -1, m + 1 };
 	RF0R(i, n) {
-		int nll = ll, nlr = lr;
-		pii nrl = rl, nrr = rr;
-		if (k[i] >= l[i].first && k[i] <= l[i].second && k[i] >= rl.first && k[i] <= rl.second) {
-			if (lr != -1) {
-				dp[i].first = lr;
-				nll = i;
+		lr.first = max(lr.first, l[i].first); lr.second = min(lr.second, l[i].second);
+		rr.first = max(rr.first, r[i].first); rr.second = min(rr.second, r[i].second);
+		{
+			if (canTake.second && (lr.first <= k[i] && lr.second >= k[i])) {
+				lr = { -1, m };
+				canTake.first = true;
+				dp[i].first = 1;
+			}
+			if (canTake.first && (rr.first <= k[i] && rr.second >= k[i])) {
+				rr = { -1, m };
+				canTake.second = true;
+				dp[i].second = 1;
 			}
 		}
-		else {
-			nll = -1;
-			nrl = { max(nrl.first, l[i].first), min(nrl.second, l[i].second) };
-		}
-		if (k[i] >= r[i].first && k[i] <= r[i].second) {
-			if (ll != 1) {
-				nlr = i;
-				dp[i].second = ll;
-			}
-		}
-		else nlr = -1;
-		ll = nll; lr = nlr;
-		rl = nrl; rr = nrr;
-		if (ll == -1 && lr == -1) {
-			possible = false;
-			break;
-		}
+		lr.first = max(lr.first, l[i].first); lr.second = min(lr.second, l[i].second);
+		rr.first = max(rr.first, r[i].first); rr.second = min(rr.second, r[i].second);
+
+		if (l[i].first > k[i] || l[i].second < k[i]) canTake.first = false;
+		if (r[i].first > k[i] || r[i].second < k[i]) canTake.second = false;
 	}
-	if (!possible) cout << "No\n";
+	if (l[0].first > 0) dp[0].second = -1;
+	if (r[0].first > 0) dp[0].first = -1;
+
+	if (dp[0].first == -1 && dp[0].second == -1) cout << "No\n";
 	else {
 		cout << "Yes\n";
-		bool side = dp[0].second != -1;
-		cout << side ? 1 : 0;
-		if (side) {
-			if (dp[0].second != -1) {
-				side = 0;
-			}
-		}
-		else {
-			if (dp[0].first != -1) {
-				side = 1;
-			}
-		}
-		FOR(i, 1, n) {
-			cout << ' ' << side ? 1 : 0;
+
+		bool side;
+		if (dp[0].first == -1) side = true;
+		else side = false;
+		int p = 0;
+		while (p < n) {
+			if (side) cout << "1 ";
+			else cout << "0 ";
 			if (side) {
-				if (dp[i].second != -1) {
-					side = 0;
-				}
+				if (dp[p].second != -1) side = !side;
 			}
-			else {
-				if (dp[i].first != -1) {
-					side = 1;
-				}
-			}
+			else if (dp[p].first != -1) side = !side;
+			p++;
 		}
 	}
 }

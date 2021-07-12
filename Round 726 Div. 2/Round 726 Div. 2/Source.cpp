@@ -13,6 +13,8 @@
 //#include <unordered_set>
 //#include <unordered_map>
 //#include <stack>
+//#include <iomanip>
+//#include <climits>
 //
 //using namespace std;
 //using ll = long long;
@@ -40,7 +42,8 @@
 //
 //// for loops
 //#define FOR(i, a, b) for (int i = a; i < b; i++)
-//#define F0R(i,b) FOR(i, 0, b)
+//#define F0R(i, b) FOR(i, 0, b)
+//#define F1R(i, b) FOR(i, 1, b)
 //#define F0R2(i, j, a, b) F0R(i, a) F0R(j, b)
 //#define RFOR(i, a, b) for (int i = a - 1; i >= b; i--)
 //#define RF0R(i, a) RFOR(i, a, 0)
