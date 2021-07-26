@@ -57,7 +57,20 @@ int gcf(int a, int b) {
 	return gcf(b % a, a);
 }
 
+vi primes;
+
 int main() {
+	for (int i = 2; i <= sqrt(1000000); i++) {
+		bool prime = true;
+		F0R(j, sz(primes)) {
+			if (i % primes[j] == 0) {
+				prime = false;
+				break;
+			}
+		}
+		if (prime) primes.push_back(i);
+	}
+
 	int t;
 	cin >> t;
 	while (t--) {
@@ -65,17 +78,75 @@ int main() {
 		cin >> n;
 		vi a(n);
 		F0R(i, n) cin >> a[i];
-		if (n == 1) cout << 0 << '\n';
-		else {
-			int cur = gcf(a[n - 1], a[n - 2]);
-			int ans = 0;
-			RF0R(i, n - 2) {
-				if (gcf(a[i], cur) != cur) {
-					cur = gcf(a[i], cur);
-					ans++;
+		vector<map<int, int>> pfs(n, map<int, int>());
+		F0R(i, n) {
+			int num = a[i];
+			pfs[i][1]++;
+			F0R(j, sz(primes)) {
+				while (num % primes[j] == 0) {
+					num /= primes[j];
+					pfs[i][primes[j]]++;
+				}
+				if (num == 1) break;
+			}
+			if (num != 1) pfs[i][num]++;
+		}
+		map<int, int> shared;
+		for (auto x : pfs[0]) shared[x.first] += x.second;
+		F1R(i, sz(pfs)) {
+			map<int, int> cur;
+			for (auto x : pfs[i]) cur[x.first] += x.second;
+			for (auto x : shared) shared[x.first] = min(x.second, pfs[i][x.first]);
+		}
+		int val = 1;
+		for (auto x : shared) {
+			F0R(i, x.second) {
+				val *= x.first;
+			}
+		}
+		queue<pii> q;
+		vb visited(n, false);
+		int move = 0;
+		bool gcfval = false;
+		while (!gcfval) {
+			bool notyet = true;
+			F0R(i, n) {
+				if (a[i] == val) {
+					notyet = false;
+					break;
 				}
 			}
-			cout << ans << '\n';
+			if (!notyet) break;
+			move++;
+
+			int a0 = a[0];
+			F0R(i, n - 1) {
+				int ni = (i + 1) % n;
+				a[i] = gcf(a[i], a[ni]);
+			}
+			a[n - 1] = gcf(a[n - 1], a0);
 		}
+		F0R(i, n) {
+			if (a[i] == val) {
+				q.push({ i, move });
+				visited[i] = true;
+				visited[(i + 1) % n] = true;
+			}
+		}
+
+		while (!q.empty()) {
+			int i = q.front().first, m = q.front().second;
+			q.pop();
+			move = max(move, m);
+			if (!visited[(i + 2) % n]) {
+				visited[(i + 2) % n] = true;
+				q.push({ (i + 1) % n, m + 1 });
+			}
+			if (!visited[(i + n - 1) % n]) {
+				visited[(i + n - 1) % n] = true;
+				q.push({ (i + n - 1) % n, m + 1 });
+			}
+		}
+		cout << move << '\n';
 	}
 }
