@@ -60,28 +60,14 @@ int main() {
 		string s, t;
 		cin >> s;
 		cin >> t;
-		s.push_back('A'); t.push_back('A');
-		int pr, p;
-		F0R(i, sz(s)) {
-			if (s[i] == t[0]) {
-				pr = i;
-				break;
+		int p = sz(t) - 1;
+		RF0R(i, sz(s)) {
+			if (p >= 0 && s[i] == t[p]) {
+				p--;
 			}
+			else i--;
 		}
-		p = pr + 1;
-		bool poss = true;
-		F1R(i, sz(t)) {
-			if (!poss) break;
-			while (s[p] != t[i] || (p - pr) % 2 == 0) {
-				if (p == sz(s)) {
-					poss = false;
-					break;
-				}
-				p++;
-			}
-			pr = p++;
-		}
-		if (poss) cout << "YES\n";
-		else cout << "NO\n";
+		if (p >= 0) cout << "NO\n";
+		else cout << "YES\n";
 	}
 }

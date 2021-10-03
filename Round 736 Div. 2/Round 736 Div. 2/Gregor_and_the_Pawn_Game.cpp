@@ -1,0 +1,98 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <utility>
+#include <string.h>
+#include <algorithm>
+#include <math.h>
+#include <string>
+#include <queue>
+#include <deque>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <unordered_map>
+#include <stack>
+#include <iomanip>
+#include <climits>
+
+using namespace std;
+using ll = long long;
+using str = string;
+
+using vi = vector<int>;
+using vvi = vector<vi>;
+using vll = vector<ll>;
+using vb = vector<bool>;
+using vc = vector<char>;
+using vstr = vector<string>;
+using pii = pair<int, int>;
+using vpii = vector<pii>;
+
+#define sz(x) (int)(x.size())
+#define rsz resize
+#define bg(x) begin(x)
+#define all(x) bg(x), end(x)
+#define rall(x) x.rbegin(), x.rend() 
+#define pb push_back
+#define eb emplace_back
+
+#define lb lower_bound
+#define ub upper_bound
+
+// for loops
+#define FOR(i, a, b) for (int i = a; i < b; i++)
+#define F0R(i, b) FOR(i, 0, b)
+#define F1R(i, b) FOR(i, 1, b)
+#define F0R2(i, j, a, b) F0R(i, a) F0R(j, b)
+#define RFOR(i, a, b) for (int i = a - 1; i >= b; i--)
+#define RF0R(i, a) RFOR(i, a, 0)
+
+#define MOD 1
+
+#define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
+
+int t;
+
+int main() {
+	cin >> t;
+	while (t--) {
+		int n;
+		cin >> n;
+		vb block(n, false);
+		F0R(i, n) {
+			char c;
+			cin >> c;
+			if (c == '1') block[i] = true;
+		}
+		vb cur(n, false);
+		int cnt = 0;
+		F0R(i, n) {
+			char c;
+			cin >> c;
+			if (c == '1') {
+				cur[i] = true;
+				cnt++;
+			}
+		}
+		vb used(n, false);
+		vb eaten(n, false);
+		cnt = 0;
+		F0R(i, n) {
+			if (cur[i]) {
+				if (block[i] || used[i]) {
+					if (i > 0 && block[i - 1] && !used[i - 1]) {
+						used[i - 1] = true;
+						cnt++;
+					}
+					else if (i < n - 1 && block[i + 1]) {
+						used[i + 1] = true;
+						cnt++;
+					}
+				}
+				else cnt++;
+			}
+		}
+		cout << cnt << '\n';
+	}
+}
