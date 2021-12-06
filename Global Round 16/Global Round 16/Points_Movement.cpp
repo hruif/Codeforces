@@ -98,6 +98,6 @@ int main() {
 			}
 			p2++;
 		}
-		cout << min(dp[m - 1].first, dp[m - 1].second) << '\n';
+		cout << min(dp[m - 1].first, dp[m - 1].second) / 2 << '\n';
 	}
 }
