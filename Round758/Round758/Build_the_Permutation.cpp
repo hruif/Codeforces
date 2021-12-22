@@ -48,49 +48,80 @@ using vpii = vector<pii>;
 #define RFOR(i, a, b) for (int i = a - 1; i >= b; i--)
 #define RF0R(i, a) RFOR(i, a, 0)
 
-#define MOD 1
+#define MOD (ll)(1e9 + 7)
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 int t;
-int sieve[20000001];
-int cnts[20000001];
-
-ll fast_pow(ll b, ll e) {
-	if (e == 0) return 1;
-	ll val = fast_pow(b, e / 2);
-	val *= val;
-	if (e % 2) val *= b;
-	return val;
-}
+int p[100000];
 
 int main() {
-	for (int i = 0; i <= 20000000; i++) sieve[i] = -1;
-	for (ll i = 2; i <= 20000000; i++) {
-		if (sieve[i] != -1) continue;
-		for (ll j = i * i; j <= 20000000; j += i) {
-			if (sieve[j] == -1) sieve[j] = i;
-		}
-	}
-	for (int i = 2; i <= 20000000; i++) {
-		if (sieve[i] == -1) cnts[i] = 1;
-		else if (sieve[i] != sieve[i / sieve[i]] && sieve[i] != i / sieve[i]) cnts[i] = cnts[i / sieve[i]] + 1;
-		else cnts[i] = cnts[i / sieve[i]];
-	}
+	fast_cin();
 
 	cin >> t;
 	while (t--) {
-		int c, d, x;
-		cin >> c >> d >> x;
-		ll ans = 0;
-		for (int g = 1; g * g <= x; g++) {
-			if (x % g == 0) {
-				int tx = x / g + d;
-				if (tx % c == 0) ans += fast_pow(2, cnts[tx / c]);
-				tx = g + d;
-				if (tx % c == 0 && g * g != x) ans += fast_pow(2, cnts[tx / c]);
+		int n, a, b;
+		cin >> n >> a >> b;
+		if (abs(a - b) > 1) cout << "-1\n";
+		else if (a + b > n - 2) cout << "-1\n";
+		else {
+			int mi = 1, ma = n;
+			if (a > b) {
+				p[0] = mi++;
+				for (int i = 1; i < n; i++) {
+					if (a > 0) {
+						if (i % 2) {
+							p[i] = ma--;
+							a--;
+						}
+						else {
+							p[i] = mi++;
+							b--;
+						}
+					}
+					else {
+						p[i] = ma--;
+					}
+				}
 			}
+			else if (b > a) {
+				p[0] = ma--;
+				for (int i = 1; i < n; i++) {
+					if (b > 0) {
+						if (i % 2) {
+							p[i] = mi++;
+							b--;
+						}
+						else {
+							p[i] = ma--;
+							a--;
+						}
+					}
+					else {
+						p[i] = mi++;
+					}
+				}
+			}
+			else {
+				p[0] = mi++;
+				for (int i = 1; i < n; i++) {
+					if (b > 0) {
+						if (i % 2) {
+							p[i] = ma--;
+							a--;
+						}
+						else {
+							p[i] = mi++;
+							b--;
+						}
+					}
+					else {
+						p[i] = mi++;
+					}
+				}
+			}
+			for (int i = 0; i < n; i++) cout << p[i] << ' ';
+			cout << '\n';
 		}
-		cout << ans << '\n';
 	}
 }

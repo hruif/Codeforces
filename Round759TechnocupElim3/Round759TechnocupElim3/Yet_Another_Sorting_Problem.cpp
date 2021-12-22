@@ -48,49 +48,68 @@ using vpii = vector<pii>;
 #define RFOR(i, a, b) for (int i = a - 1; i >= b; i--)
 #define RF0R(i, a) RFOR(i, a, 0)
 
-#define MOD 1
+#define MOD (ll)(1e9 + 7)
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 int t;
-int sieve[20000001];
-int cnts[20000001];
+int a[500000], sa[500000];
+vector<int> st;
 
-ll fast_pow(ll b, ll e) {
-	if (e == 0) return 1;
-	ll val = fast_pow(b, e / 2);
-	val *= val;
-	if (e % 2) val *= b;
+void set_st(int n) {
+	st.clear();
+	int sn = 1;
+	while (sn < n) sn *= 2;
+	st.resize(sn * 2, 0);
+}
+
+int find_val(int a, int b) {
+	int sn = st.size() / 2;
+	a += sn; b += sn;
+	int val = 0;
+	while (a <= b) {
+		if (a % 2 == 1) val += st[a++];
+		if (b % 2 == 0) val += st[b--];
+		a /= 2; b /= 2;
+	}
 	return val;
 }
 
+void change_val(int k, int x) {
+	int sn = st.size() / 2;
+	k += sn;
+	st[k] += x;
+	for (k /= 2; k >= 1; k /= 2) {
+		st[k] = st[k * 2] + st[k * 2 + 1];
+	}
+}
+
 int main() {
-	for (int i = 0; i <= 20000000; i++) sieve[i] = -1;
-	for (ll i = 2; i <= 20000000; i++) {
-		if (sieve[i] != -1) continue;
-		for (ll j = i * i; j <= 20000000; j += i) {
-			if (sieve[j] == -1) sieve[j] = i;
-		}
-	}
-	for (int i = 2; i <= 20000000; i++) {
-		if (sieve[i] == -1) cnts[i] = 1;
-		else if (sieve[i] != sieve[i / sieve[i]] && sieve[i] != i / sieve[i]) cnts[i] = cnts[i / sieve[i]] + 1;
-		else cnts[i] = cnts[i / sieve[i]];
-	}
+	fast_cin();
 
 	cin >> t;
 	while (t--) {
-		int c, d, x;
-		cin >> c >> d >> x;
-		ll ans = 0;
-		for (int g = 1; g * g <= x; g++) {
-			if (x % g == 0) {
-				int tx = x / g + d;
-				if (tx % c == 0) ans += fast_pow(2, cnts[tx / c]);
-				tx = g + d;
-				if (tx % c == 0 && g * g != x) ans += fast_pow(2, cnts[tx / c]);
+		int n;
+		cin >> n;
+		for (int i = 0; i < n; i++) cin >> a[i];
+		for (int i = 0; i < n; i++) sa[i] = a[i];
+		sort(sa, sa + n);
+		map<int, int> m;
+		for (int i = 0; i < n; i++) m[a[i]]++;
+		bool non_dist = false;
+		for (auto x : m) if (x.second > 1) non_dist = true;
+		if (non_dist) cout << "YES\n";
+		else {
+			set_st(n + 1);
+			for (int i = 0; i < n; i++) m[sa[i]] = i;
+			for (int i = 0; i < n; i++) a[i] = m[a[i]];
+			ll inv = 0;
+			for (int i = 0; i < n; i++) {
+				inv += find_val(a[i], n);
+				change_val(a[i], 1);
 			}
+			if (inv % 2) cout << "NO\n";
+			else cout << "YES\n";
 		}
-		cout << ans << '\n';
 	}
 }

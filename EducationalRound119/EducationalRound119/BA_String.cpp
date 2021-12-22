@@ -48,47 +48,55 @@ using vpii = vector<pii>;
 #define RFOR(i, a, b) for (int i = a - 1; i >= b; i--)
 #define RF0R(i, a) RFOR(i, a, 0)
 
-#define MOD 1
+#define MOD (ll)(1e9 + 7)
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 int t;
-int sieve[20000001];
-int cnts[20000001];
-
-ll fast_pow(ll b, ll e) {
-	if (e == 0) return 1;
-	ll val = fast_pow(b, e / 2);
-	val *= val;
-	if (e % 2) val *= b;
-	return val;
-}
+string s;
 
 int main() {
-	for (int i = 0; i <= 20000000; i++) sieve[i] = -1;
-	for (ll i = 2; i <= 20000000; i++) {
-		if (sieve[i] != -1) continue;
-		for (ll j = i * i; j <= 20000000; j += i) {
-			if (sieve[j] == -1) sieve[j] = i;
-		}
-	}
-	for (int i = 2; i <= 20000000; i++) {
-		if (sieve[i] == -1) cnts[i] = 1;
-		else if (sieve[i] != sieve[i / sieve[i]] && sieve[i] != i / sieve[i]) cnts[i] = cnts[i / sieve[i]] + 1;
-		else cnts[i] = cnts[i / sieve[i]];
-	}
+	fast_cin();
 
 	cin >> t;
 	while (t--) {
-		int c, d, x;
-		cin >> c >> d >> x;
-		ll ans = 0;
-		for (int g = 1; g * g <= x; g++) {
-			if (x % g == 0) {
-				int tx = x / g + d;
-				if (tx % c == 0) ans += fast_pow(2, cnts[tx / c]);
-				tx = g + d;
-				if (tx % c == 0 && g * g != x) ans += fast_pow(2, cnts[tx / c]);
+		ll n, k, x;
+		cin >> n >> k >> x;
+		k;
+		cin >> s;
+		vector<ll> asts;
+		for (int i = 0; i < s.size(); i++) {
+			if (s[i] == 'a') continue;
+			for (int j = i + 1; j <= s.size(); j++) {
+				if (j == s.size() || s[j] == 'a') {
+					asts.push_back(j - i);
+					i = j - 1;
+					break;
+				}
+			}
+		}
+		reverse(all(asts));
+		vector<ll> cnts;
+		x--;
+		for (int i = 0; i < asts.size(); i++) {
+			ll cur = asts[i] * k;
+			cnts.push_back(x % (cur + 1));
+			x /= (cur + 1);
+		}
+		reverse(all(cnts));
+		int cur = 0;
+		string ans;
+		for (int i = 0; i < s.size(); i++) {
+			if (s[i] == 'a') ans.push_back('a');
+			else {
+				for (int j = 0; j < cnts[cur]; j++) ans.push_back('b');
+				cur++;
+				for (int j = i + 1; j <= s.size(); j++) {
+					if (j == s.size() || s[j] == 'a') {
+						i = j - 1;
+						break;
+					}
+				}
 			}
 		}
 		cout << ans << '\n';

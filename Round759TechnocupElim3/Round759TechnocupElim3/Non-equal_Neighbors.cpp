@@ -48,49 +48,34 @@ using vpii = vector<pii>;
 #define RFOR(i, a, b) for (int i = a - 1; i >= b; i--)
 #define RF0R(i, a) RFOR(i, a, 0)
 
-#define MOD 1
+#define MOD (ll)(998244353)
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-int t;
-int sieve[20000001];
-int cnts[20000001];
+int n;
+int a[200000];
 
 ll fast_pow(ll b, ll e) {
 	if (e == 0) return 1;
 	ll val = fast_pow(b, e / 2);
 	val *= val;
+	val %= MOD;
 	if (e % 2) val *= b;
-	return val;
+	return val % MOD;
 }
 
 int main() {
-	for (int i = 0; i <= 20000000; i++) sieve[i] = -1;
-	for (ll i = 2; i <= 20000000; i++) {
-		if (sieve[i] != -1) continue;
-		for (ll j = i * i; j <= 20000000; j += i) {
-			if (sieve[j] == -1) sieve[j] = i;
-		}
-	}
-	for (int i = 2; i <= 20000000; i++) {
-		if (sieve[i] == -1) cnts[i] = 1;
-		else if (sieve[i] != sieve[i / sieve[i]] && sieve[i] != i / sieve[i]) cnts[i] = cnts[i / sieve[i]] + 1;
-		else cnts[i] = cnts[i / sieve[i]];
-	}
+	fast_cin();
 
-	cin >> t;
-	while (t--) {
-		int c, d, x;
-		cin >> c >> d >> x;
-		ll ans = 0;
-		for (int g = 1; g * g <= x; g++) {
-			if (x % g == 0) {
-				int tx = x / g + d;
-				if (tx % c == 0) ans += fast_pow(2, cnts[tx / c]);
-				tx = g + d;
-				if (tx % c == 0 && g * g != x) ans += fast_pow(2, cnts[tx / c]);
-			}
+	cin >> n;
+	for (int i = 0; i < n; i++) cin >> a[i];
+	long long ans = a[0];
+	for (int i = 1; i < n; i++) {
+		if (a[i] >= a[i - 1]) ans *= a[i] - 1;
+		else {
+			ans *= a[i - 1] - 1;
 		}
-		cout << ans << '\n';
+		ans %= MOD;
 	}
+	cout << ans << '\n';
 }

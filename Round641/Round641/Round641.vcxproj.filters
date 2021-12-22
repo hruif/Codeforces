@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
+    <ClCompile Include="Orac_and_LCM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Divan_and_Kostomuksha.cpp">
+    <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

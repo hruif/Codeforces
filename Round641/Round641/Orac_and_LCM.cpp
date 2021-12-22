@@ -48,13 +48,14 @@ using vpii = vector<pii>;
 #define RFOR(i, a, b) for (int i = a - 1; i >= b; i--)
 #define RF0R(i, a) RFOR(i, a, 0)
 
-#define MOD 1
+#define MOD (ll)(1e9 + 7)
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-int t;
-int sieve[20000001];
-int cnts[20000001];
+int n;
+int a[100000];
+vector<ll> primes;
+vector<vector<int>> pcnt;
 
 ll fast_pow(ll b, ll e) {
 	if (e == 0) return 1;
@@ -65,32 +66,45 @@ ll fast_pow(ll b, ll e) {
 }
 
 int main() {
-	for (int i = 0; i <= 20000000; i++) sieve[i] = -1;
-	for (ll i = 2; i <= 20000000; i++) {
-		if (sieve[i] != -1) continue;
-		for (ll j = i * i; j <= 20000000; j += i) {
-			if (sieve[j] == -1) sieve[j] = i;
-		}
-	}
-	for (int i = 2; i <= 20000000; i++) {
-		if (sieve[i] == -1) cnts[i] = 1;
-		else if (sieve[i] != sieve[i / sieve[i]] && sieve[i] != i / sieve[i]) cnts[i] = cnts[i / sieve[i]] + 1;
-		else cnts[i] = cnts[i / sieve[i]];
-	}
+	fast_cin();
 
-	cin >> t;
-	while (t--) {
-		int c, d, x;
-		cin >> c >> d >> x;
-		ll ans = 0;
-		for (int g = 1; g * g <= x; g++) {
-			if (x % g == 0) {
-				int tx = x / g + d;
-				if (tx % c == 0) ans += fast_pow(2, cnts[tx / c]);
-				tx = g + d;
-				if (tx % c == 0 && g * g != x) ans += fast_pow(2, cnts[tx / c]);
+	primes.push_back(2);
+	for (int i = 3; i <= 200000; i += 2) {
+		bool p = true;
+		for (auto x : primes) {
+			if (x * x > i) break;
+			if (i % x == 0) {
+				p = false;
+				break;
 			}
 		}
-		cout << ans << '\n';
+		if (p) primes.push_back(i);
 	}
+	pcnt.resize(primes.size());
+
+	cin >> n;
+	for (int i = 0; i < n; i++) cin >> a[i];
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < primes.size(); j++) {
+			ll x = primes[j];
+			if (x * x > a[i]) break;
+			int cnt = 0;
+			while (a[i] % x == 0) {
+				a[i] /= x;
+				cnt++;
+			}
+			if (cnt > 0) pcnt[j].push_back(cnt);
+		}
+		if (a[i] > 1) {
+			pcnt[lower_bound(all(primes), a[i]) - primes.begin()].push_back(1);
+		}
+	}
+	ll ans = 1;
+	for (int i = 0; i < primes.size(); i++) {
+		sort(all(pcnt[i]));
+		int cur_pcnt = 0;
+		if (pcnt[i].size() >= n - 1) cur_pcnt = pcnt[i][pcnt[i].size() - n + 1];
+		ans *= fast_pow(primes[i], cur_pcnt);
+	}
+	cout << ans << '\n';
 }

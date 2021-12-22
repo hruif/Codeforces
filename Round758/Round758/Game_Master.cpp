@@ -48,49 +48,52 @@ using vpii = vector<pii>;
 #define RFOR(i, a, b) for (int i = a - 1; i >= b; i--)
 #define RF0R(i, a) RFOR(i, a, 0)
 
-#define MOD 1
+#define MOD (ll)(1e9 + 7)
 
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 int t;
-int sieve[20000001];
-int cnts[20000001];
-
-ll fast_pow(ll b, ll e) {
-	if (e == 0) return 1;
-	ll val = fast_pow(b, e / 2);
-	val *= val;
-	if (e % 2) val *= b;
-	return val;
-}
+int oa[100000], ob[100000];
+vector<pair<int, int>> a, b;
 
 int main() {
-	for (int i = 0; i <= 20000000; i++) sieve[i] = -1;
-	for (ll i = 2; i <= 20000000; i++) {
-		if (sieve[i] != -1) continue;
-		for (ll j = i * i; j <= 20000000; j += i) {
-			if (sieve[j] == -1) sieve[j] = i;
-		}
-	}
-	for (int i = 2; i <= 20000000; i++) {
-		if (sieve[i] == -1) cnts[i] = 1;
-		else if (sieve[i] != sieve[i / sieve[i]] && sieve[i] != i / sieve[i]) cnts[i] = cnts[i / sieve[i]] + 1;
-		else cnts[i] = cnts[i / sieve[i]];
-	}
+	fast_cin();
 
 	cin >> t;
 	while (t--) {
-		int c, d, x;
-		cin >> c >> d >> x;
-		ll ans = 0;
-		for (int g = 1; g * g <= x; g++) {
-			if (x % g == 0) {
-				int tx = x / g + d;
-				if (tx % c == 0) ans += fast_pow(2, cnts[tx / c]);
-				tx = g + d;
-				if (tx % c == 0 && g * g != x) ans += fast_pow(2, cnts[tx / c]);
+		int n;
+		cin >> n;
+		a.resize(n); b.resize(n);
+		for (int i = 0; i < n; i++) cin >> oa[i];
+		for (int i = 0; i < n; i++) cin >> ob[i];
+		for (int i = 0; i < n; i++) a[i] = { oa[i], i };
+		for (int i = 0; i < n; i++) b[i] = { ob[i], i };
+		sort(all(a)); sort(all(b));
+
+		int p1 = n - 2, p2 = n - 2;
+		int s1 = oa[b.back().second], s2 = ob[a.back().second];
+
+		set<int> ans;
+		ans.insert(a.back().second);
+		ans.insert(b.back().second);
+		while ((p1 >= 0 && a[p1].first > s1)) {
+			int os1 = s1, os2 = s2;
+			while (p1 >= 0 && a[p1].first > s1) {
+				int i = a[p1].second;
+				ans.insert(i);
+				s2 = min(s2, ob[i]);
+				p1--;
+			}
+			while (p2 >= 0 && b[p2].first > s2) {
+				int i = b[p2].second;
+				ans.insert(i);
+				s1 = min(s1, oa[i]);
+				p2--;
 			}
 		}
-		cout << ans << '\n';
+		vector<int> an(n, 0);
+		for (auto x : ans) an[x] = 1;
+		for (auto x : an) cout << x;
+		cout << '\n';
 	}
 }
