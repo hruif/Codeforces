@@ -18,7 +18,7 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game_with_Stones - Copy.cpp">
+    <ClCompile Include="X(or)-mas_Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
