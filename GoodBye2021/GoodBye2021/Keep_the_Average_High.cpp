@@ -2,9 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <utility>
-#include <string.h>
+#include <cstring>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 #include <string>
 #include <queue>
 #include <deque>
@@ -15,6 +15,7 @@
 #include <stack>
 #include <iomanip>
 #include <climits>
+#include <array>
 
 using namespace std;
 using ll = long long;
@@ -53,34 +54,29 @@ using vpii = vector<pii>;
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 int t;
-int a[300000], c[300000];
+ll a[50000];
+
+void solve() {
+	ll n, x;
+	cin >> n;
+	for (int i = 0; i < n; i++) cin >> a[i];
+	cin >> x;
+	vector<bool> selected(n, true);
+	for (int i = 0; i < n; i++) {
+		if (!selected[i]) continue;
+		if (i < n - 1 && a[i] + a[i + 1] < x * 2) selected[i + 1] = false;
+		else if (i < n - 2 && a[i] + a[i + 1] + a[i + 2] < x * 3 && selected[i + 1]) selected[i + 2] = false;
+	}
+	int cnt = 0;
+	for (auto x : selected)
+		if (x) cnt++;
+	cout << cnt << '\n';
+}
 
 int main() {
 	fast_cin();
 
 	cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		for (int i = 0; i < n; i++) cin >> a[i];
-		c[0] = 0;
-		for (int i = 1; i < n; i++) c[i] = a[i];// -c[i - 1];
-		map<int, int> m1, m2;
-		m1[0] = m2[0] = 1;
-		ll ans = 0;
-		for (int i = 0; i < n; i++) {
-			int x = a[i];
-			if (i & 1) {
-				while (!m1.empty() && m1.rbegin()->first > x) m1.erase(--m1.end());
-				if (!m1.empty() && m1.rbegin()->first == x) ans += m1.rbegin()->second;
-				m1[x]++;
-			}
-			else {
-				while (!m2.empty() && m2.rbegin()->first > x) m2.erase(--m2.end());
-				if (!m2.empty() && m2.rbegin()->first == x) ans += m2.rbegin()->second;
-				m2[x]++;
-			}
-		}
-		cout << ans << '\n';
-	}
+	while (t--)
+		solve();
 }

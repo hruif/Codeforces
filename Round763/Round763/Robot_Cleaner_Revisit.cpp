@@ -2,9 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <utility>
-#include <string.h>
+#include <cstring>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 #include <string>
 #include <queue>
 #include <deque>
@@ -15,6 +15,7 @@
 #include <stack>
 #include <iomanip>
 #include <climits>
+#include <array>
 
 using namespace std;
 using ll = long long;
@@ -53,34 +54,46 @@ using vpii = vector<pii>;
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 int t;
-int a[300000], c[300000];
+int r[2], c[2];
+
+ll fast_pow(ll b, ll e) {
+	if (e == 0) return 1;
+	ll val = fast_pow(b, e / 2); 
+	val *= val;
+	val %= MOD;
+	if (e % 2) val *= b;
+	return val %= MOD;
+}
 
 int main() {
 	fast_cin();
 
 	cin >> t;
 	while (t--) {
-		int n;
-		cin >> n;
-		for (int i = 0; i < n; i++) cin >> a[i];
-		c[0] = 0;
-		for (int i = 1; i < n; i++) c[i] = a[i];// -c[i - 1];
-		map<int, int> m1, m2;
-		m1[0] = m2[0] = 1;
+		ll n, m, p;
+		cin >> n >> m;
+		cin >> r[0] >> r[1];
+		cin >> c[0] >> c[1];
+		cin >> p;
+		ll nprob = (100 - p) * fast_pow(100, MOD - 2) % MOD;
+
+		int dx = 1, dy = 1;
+		ll cur = 1;
 		ll ans = 0;
-		for (int i = 0; i < n; i++) {
-			int x = a[i];
-			if (i & 1) {
-				while (!m1.empty() && m1.rbegin()->first > x) m1.erase(--m1.end());
-				if (!m1.empty() && m1.rbegin()->first == x) ans += m1.rbegin()->second;
-				m1[x]++;
-			}
-			else {
-				while (!m2.empty() && m2.rbegin()->first > x) m2.erase(--m2.end());
-				if (!m2.empty() && m2.rbegin()->first == x) ans += m2.rbegin()->second;
-				m2[x]++;
-			}
+		for (int i = 0; i < 4 * (n - 1) * (m - 1); i++) {
+			if (r[0] == 1) dx = 1;
+			if (r[0] == n) dx = -1;
+			if (r[1] == 1) dy = 1;
+			if (r[1] == m) dy = -1;
+
+			ll a = (r[0] == c[0] || r[1] == c[1] ? nprob : 1);
+			cur *= a;
+			cur %= MOD;
+			ans += cur;
+			ans %= MOD;
+
+			r[0] += dx; r[1] += dy;
 		}
-		cout << ans << '\n';
+		cout << ans * fast_pow((1 - cur + MOD) % MOD, MOD - 2) % MOD << '\n';
 	}
 }

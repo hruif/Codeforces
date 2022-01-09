@@ -2,9 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <utility>
-#include <string.h>
+#include <cstring>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 #include <string>
 #include <queue>
 #include <deque>
@@ -15,6 +15,7 @@
 #include <stack>
 #include <iomanip>
 #include <climits>
+#include <array>
 
 using namespace std;
 using ll = long long;
@@ -53,7 +54,7 @@ using vpii = vector<pii>;
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 int t;
-int a[300000], c[300000];
+ll h[200000], tmph[200000];
 
 int main() {
 	fast_cin();
@@ -62,25 +63,24 @@ int main() {
 	while (t--) {
 		int n;
 		cin >> n;
-		for (int i = 0; i < n; i++) cin >> a[i];
-		c[0] = 0;
-		for (int i = 1; i < n; i++) c[i] = a[i];// -c[i - 1];
-		map<int, int> m1, m2;
-		m1[0] = m2[0] = 1;
-		ll ans = 0;
-		for (int i = 0; i < n; i++) {
-			int x = a[i];
-			if (i & 1) {
-				while (!m1.empty() && m1.rbegin()->first > x) m1.erase(--m1.end());
-				if (!m1.empty() && m1.rbegin()->first == x) ans += m1.rbegin()->second;
-				m1[x]++;
+		for (int i = 0; i < n; i++) cin >> h[i];
+		for (int i = 0; i < n; i++) tmph[i] = h[i];
+		int l = 1, r = 1e9 + 1;
+		while (l < r - 1) {
+			int m = (l + r) / 2;
+			bool val = true;
+			for (int i = n - 1; i >= 2; i--) {
+				ll excess = min(h[i] - m, tmph[i]);
+				if (excess <= 0) continue;
+				excess /= 3;
+				h[i - 2] += excess * 2;
+				h[i - 1] += excess;
 			}
-			else {
-				while (!m2.empty() && m2.rbegin()->first > x) m2.erase(--m2.end());
-				if (!m2.empty() && m2.rbegin()->first == x) ans += m2.rbegin()->second;
-				m2[x]++;
-			}
+			for (int i = 0; i < n; i++) if (h[i] < m) val = false;
+			for (int i = 0; i < n; i++) h[i] = tmph[i];
+			if (val) l = m;
+			else r = m;
 		}
-		cout << ans << '\n';
+		cout << l << '\n';
 	}
 }

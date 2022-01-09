@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{ee5dc9d3-c623-4a4e-8007-37f820d0270b}</ProjectGuid>
-    <RootNamespace>EducationalRound120</RootNamespace>
+    <ProjectGuid>{32d71863-18e2-450c-9967-9220c8cf268d}</ProjectGuid>
+    <RootNamespace>Hello2022</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,8 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Shuffle.cpp" />
+    <ClCompile Include="New_School.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Strange_Instructions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,9 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <utility>
-#include <string.h>
+#include <cstring>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 #include <string>
 #include <queue>
 #include <deque>
@@ -15,6 +15,7 @@
 #include <stack>
 #include <iomanip>
 #include <climits>
+#include <array>
 
 using namespace std;
 using ll = long long;
@@ -53,34 +54,58 @@ using vpii = vector<pii>;
 #define fast_cin() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
 int t;
-int a[300000], c[300000];
+ll l[100000], r[100000], c[100000];
+
+void solve() {
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++)
+		cin >> l[i] >> r[i] >> c[i];
+	int ls = 0, rs = 0;
+	int oneseg = 0;
+	cout << c[0] << '\n';
+	for (int i = 1; i < n; i++) {
+		bool lbet = l[i] <= l[ls], rbet = r[i] >= r[rs];
+		if (lbet && rbet) {
+			if (oneseg == -1) oneseg = i;
+			else if (l[i] < l[oneseg] || r[i] > r[oneseg] || c[i] < c[oneseg]) oneseg = i;
+			if (l[i] < l[ls]) ls = i;
+			else if (c[i] < c[ls]) ls = i;
+			if (r[i] > r[rs]) rs = i;
+			else if (c[i] < c[rs]) rs = i;
+		}
+		else {
+			if (lbet) {
+				lbet = l[i] < l[ls];
+				if (lbet) {
+					oneseg = -1;
+					ls = i;
+				}
+				else {
+					if (c[i] < c[ls]) ls = i;
+				}
+			}
+			else if (rbet) {
+				rbet = r[i] > r[rs];
+				if (rbet) {
+					oneseg = -1;
+					rs = i;
+				}
+				else {
+					if (c[i] < c[rs]) rs = i;
+				}
+			}
+		}
+		ll cost = c[ls] + c[rs];
+		if (oneseg != -1) cost = min(cost, c[oneseg]);
+		cout << cost << '\n';
+	}
+}
 
 int main() {
 	fast_cin();
 
 	cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		for (int i = 0; i < n; i++) cin >> a[i];
-		c[0] = 0;
-		for (int i = 1; i < n; i++) c[i] = a[i];// -c[i - 1];
-		map<int, int> m1, m2;
-		m1[0] = m2[0] = 1;
-		ll ans = 0;
-		for (int i = 0; i < n; i++) {
-			int x = a[i];
-			if (i & 1) {
-				while (!m1.empty() && m1.rbegin()->first > x) m1.erase(--m1.end());
-				if (!m1.empty() && m1.rbegin()->first == x) ans += m1.rbegin()->second;
-				m1[x]++;
-			}
-			else {
-				while (!m2.empty() && m2.rbegin()->first > x) m2.erase(--m2.end());
-				if (!m2.empty() && m2.rbegin()->first == x) ans += m2.rbegin()->second;
-				m2[x]++;
-			}
-		}
-		cout << ans << '\n';
-	}
+	while (t--)
+		solve();
 }
